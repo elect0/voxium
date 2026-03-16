@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: voxium_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: voxium
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  nats:
+    image: nats:alpine
+    container_name: voxium_nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+      - "8000:8000"
+    command: "-c /etc/nats/nats.conf"
+    volumes:
+      - ./nats.conf:/etc/nats/nats.conf
+      - nats_data:/data
+volumes:
+  pgdata:
+  nats_data:
